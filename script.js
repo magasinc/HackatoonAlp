@@ -7,6 +7,37 @@ let currentProfile = 'public';
 let isLoading = false;
 const conversationHistory = [];
 
+const PUBLIC_AI_WEBHOOK =
+  'https://n8n.srv1463324.hstgr.cloud/webhook/web-ai-alp-general';
+
+const JOURNALIST_AI_WEBHOOK =
+  'https://n8n.srv1463324.hstgr.cloud/webhook/web-ai-alp-periodistico';
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+/** n8n / AI agent responses vary by workflow — try common shapes */
+function parseAgentWebhookReply(data) {
+  if (data == null) return null;
+  if (typeof data === 'string' && data.trim()) return data;
+  if (typeof data !== 'object') return null;
+  const keys = ['output', 'text', 'response', 'reply', 'answer', 'message'];
+  for (const k of keys) {
+    const v = data[k];
+    if (typeof v === 'string' && v.trim()) return v;
+  }
+  if (Array.isArray(data) && data.length) {
+    const first = data[0];
+    if (typeof first === 'string') return first;
+    if (first && typeof first === 'object') return parseAgentWebhookReply(first);
+  }
+  if (data.data != null) return parseAgentWebhookReply(data.data);
+  return null;
+}
+
 // ── STARS (landing animation) ──
 (function generateStars() {
   const c = document.getElementById('stars');
@@ -54,6 +85,15 @@ function applyProfile() {
   document.getElementById('welcome-msg').textContent = isJ
     ? 'Welcome, researcher. I can provide technical satellite data, scientific citations, methodology details, and primary source references for your reporting on Alpine climate change. What do you need?'
     : "Hello! I'm the AlpineWatch AI assistant. I can help you understand climate change in the Alps — from glacier retreat to what satellite data reveals. What would you like to know?";
+
+  const statusEl = document.getElementById('chat-status-line');
+  if (statusEl) {
+    statusEl.innerHTML =
+      '<span class="status-dot"></span> ' +
+      (isJ
+        ? 'Online — AlpineWatch research assistant'
+        : 'Online — AlpineWatch assistant');
+  }
 
   buildSuggestions();
 }
@@ -274,67 +314,58 @@ async function sendMessage() {
 
   const isJ = currentProfile === 'journalist';
 
-  const systemPrompt = isJ
-    ? `You are AlpineWatch AI, a scientific research assistant for journalists and researchers investigating climate change in the Alps.
-
-Your role: provide technically precise, citation-rich, methodologically rigorous responses.
-
-Guidelines:
-- Always reference specific datasets (Sentinel-2, MODIS, WGMS, Copernicus, MeteoSwiss) and explain their technical specifications
-- Include statistical precision (confidence intervals, sample sizes, spatial resolution) when relevant
-- Reference peer-reviewed studies and name specific authors/institutions when possible
-- Explain satellite data collection and processing methodologies
-- Distinguish between observational data, model projections, and reanalysis products
-- Flag uncertainties and data gaps honestly
-- Provide context for interpreting disinformation narratives with evidence
-- Responses should be detailed and professional (2-4 paragraphs)
-- Format with clear structure. No excessive jargon but use correct scientific terminology.
-
-Context: The Alps are warming at 2× the global average. Glaciers have lost ~54% volume since 1850. Sentinel-2 provides 10m resolution, 5-day revisit optical imagery. WGMS tracks 150+ Alpine glaciers. Key myths to counter: "glaciers recovering," "natural cycles only," "snowfall increasing offsets melt."
-
-You are NOT allowed to make up citations — if unsure, say "based on established glacier monitoring records" rather than inventing a paper.`
-    : `You are AlpineWatch AI, a friendly and accessible climate science communicator helping the general public understand climate change in the Alps.
-
-Your role: make complex climate science clear, trustworthy, and actionable.
-
-Guidelines:
-- Use simple, clear language — no jargon unless you explain it
-- Connect data to real-life impacts (skiing, water supply, biodiversity, mountain communities)
-- Be warm, reassuring, and empowering — not alarmist
-- Always ground answers in verified data (mention "satellite data shows..." or "scientific measurements confirm...")
-- Gently correct climate myths by explaining what the data actually shows
-- Encourage curiosity — invite follow-up questions
-- Keep responses concise: 2-3 short paragraphs max
-- Never present uncertainty as doubt about whether climate change is happening
-
-Context: Alpine glaciers have lost half their volume since 1900. Temperatures are rising faster here than global averages. Satellite images from ESA confirm retreat every year. The goal is to empower people to understand and talk about this confidently.`;
+  const source = isJ
+    ? 'Verified sources: WGMS · Sentinel-2 · Copernicus · MeteoSwiss'
+    : 'Satellite & scientific data · AlpineWatch';
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const webhookUrl = isJ ? JOURNALIST_AI_WEBHOOK : PUBLIC_AI_WEBHOOK;
+
+    const response = await fetch(webhookUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: systemPrompt,
-        messages: conversationHistory
-      })
+        message: text,
+        messages: conversationHistory.map(m => ({ role: m.role, content: m.content })),
+      }),
     });
 
-    const data = await response.json();
+    const rawText = await response.text();
+    let data;
+    try {
+      data = rawText ? JSON.parse(rawText) : null;
+    } catch {
+      data = null;
+    }
+
     removeTyping();
 
-    const reply = data.content?.map(b => b.text || '').join('') || 'I apologize — I could not process that request. Please try again.';
+    let reply;
+    if (data && typeof data === 'object' && data.message && data.code >= 400) {
+      reply =
+        typeof data.hint === 'string'
+          ? `${data.message} ${data.hint}`
+          : String(data.message);
+    } else {
+      reply = parseAgentWebhookReply(data);
+      if (!reply && response.ok && rawText.trim()) {
+        reply = rawText.trim();
+      }
+    }
+
+    if (!reply) {
+      reply =
+        'No fue posible obtener una respuesta del asistente. Si administras n8n, activa el flujo del webhook de producción y vuelve a intentarlo.';
+    }
+
     conversationHistory.push({ role: 'assistant', content: reply });
-
-    const source = isJ
-      ? 'Verified sources: WGMS · Sentinel-2 · Copernicus · MeteoSwiss'
-      : 'Satellite & scientific data · AlpineWatch';
-    addBotMessage(reply.replace(/\n/g, '<br>'), source);
-
+    addBotMessage(escapeHtml(reply).replace(/\n/g, '<br>'), source);
   } catch (err) {
     removeTyping();
-    addBotMessage('Connection issue. Please check your setup and try again.');
+    addBotMessage(
+      'Connection issue. Please check your setup and try again.',
+      source,
+    );
   }
 
   isLoading = false;
