@@ -467,6 +467,27 @@ nav {
 
 .article-item:hover { border-color: var(--glacier); transform: translateX(4px); }
 
+.warning-low {
+  background: #EAF7F0 !important;
+  border-color: #5FAF8F !important;
+}
+.warning-low .article-thumb { color: #3E8E6E; }
+.warning-low .article-tag { color: #5FAF8F; background: rgba(95, 175, 143, 0.1); }
+
+.warning-medium {
+  background: #FFF4E5 !important;
+  border-color: #F4A261 !important;
+}
+.warning-medium .article-thumb { color: #E76F51; }
+.warning-medium .article-tag { color: #F4A261; background: rgba(244, 162, 97, 0.1); }
+
+.warning-medium-plus {
+  background: #FFE6E6 !important;
+  border-color: #E74C3C !important;
+}
+.warning-medium-plus .article-thumb { color: #C0392B; }
+.warning-medium-plus .article-tag { color: #E74C3C; background: rgba(231, 76, 60, 0.15); }
+
 .article-thumb {
   width: 64px; height: 64px;
   border-radius: 8px;
