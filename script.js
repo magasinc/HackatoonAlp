@@ -13,6 +13,24 @@ const PUBLIC_AI_WEBHOOK =
 const JOURNALIST_AI_WEBHOOK =
   'https://n8n.srv1463324.hstgr.cloud/webhook/web-ai-alp-periodistico';
 
+const SESSION_STORAGE_KEY = 'alpinewatch_n8n_session_id';
+
+/** Stable ID per browser so n8n can scope memory (one conversation thread per visitor). */
+function getOrCreateSessionId() {
+  try {
+    let id = localStorage.getItem(SESSION_STORAGE_KEY);
+    if (id && id.length > 8) return id;
+    id =
+      typeof crypto !== 'undefined' && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `sess-${Date.now()}-${Math.random().toString(36).slice(2, 12)}`;
+    localStorage.setItem(SESSION_STORAGE_KEY, id);
+    return id;
+  } catch {
+    return `sess-${Date.now()}-${Math.random().toString(36).slice(2, 12)}`;
+  }
+}
+
 function escapeHtml(s) {
   const d = document.createElement('div');
   d.textContent = s;
@@ -326,6 +344,7 @@ async function sendMessage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         message: text,
+        sessionId: getOrCreateSessionId(),
         messages: conversationHistory.map(m => ({ role: m.role, content: m.content })),
       }),
     });
