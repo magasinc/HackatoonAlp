@@ -13,6 +13,15 @@ const PUBLIC_AI_WEBHOOK =
 const JOURNALIST_AI_WEBHOOK =
   'https://n8n.srv1463324.hstgr.cloud/webhook/web-ai-alp-periodistico';
 
+/** Base URL for Flask glacier endpoint (override: window.__GLACIER_API__ = 'https://your.api') */
+const GLACIER_API_BASE =
+  typeof window.__GLACIER_API__ === 'string' && window.__GLACIER_API__.length
+    ? window.__GLACIER_API__.replace(/\/$/, '')
+    : 'http://localhost:5000';
+
+let glacierLeafletMap = null;
+let glacierEeTileLayer = null;
+
 const SESSION_STORAGE_KEY = 'alpinewatch_n8n_session_id';
 
 /** Stable ID per browser so n8n can scope memory (one conversation thread per visitor). */
@@ -134,6 +143,86 @@ function showSection(id, btn) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   document.getElementById('section-' + id).classList.add('active');
   if (btn) btn.classList.add('active');
+  if (id === 'map') {
+    requestAnimationFrame(() => {
+      ensureGlacierCompareMap();
+      if (glacierLeafletMap) glacierLeafletMap.invalidateSize();
+    });
+  }
+}
+
+function ensureGlacierCompareMap() {
+  if (glacierLeafletMap || typeof L === 'undefined') return;
+  const el = document.getElementById('glacier-compare-map');
+  if (!el) return;
+  glacierLeafletMap = L.map(el).setView([46.5, 9], 6);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  }).addTo(glacierLeafletMap);
+}
+
+function setGlacierCompareStatus(text, isError) {
+  const s = document.getElementById('glacier-compare-status');
+  if (!s) return;
+  s.textContent = text || '';
+  s.classList.toggle('is-error', Boolean(isError));
+}
+
+async function compararGlacierMelt() {
+  ensureGlacierCompareMap();
+  if (!glacierLeafletMap) {
+    setGlacierCompareStatus('No se pudo cargar el mapa (Leaflet).', true);
+    return;
+  }
+
+  const year1 = document.getElementById('glacier-year1')?.value;
+  const year2 = document.getElementById('glacier-year2')?.value;
+  const btn = document.getElementById('glacier-compare-btn');
+
+  setGlacierCompareStatus('');
+  if (btn) btn.disabled = true;
+
+  try {
+    const url = `${GLACIER_API_BASE}/glacier?year1=${encodeURIComponent(year1)}&year2=${encodeURIComponent(year2)}`;
+    const response = await fetch(url);
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      const msg =
+        data.message ||
+        data.error ||
+        `Error ${response.status} al contactar el servidor. ¿Está corriendo app.py en el puerto 5000?`;
+      setGlacierCompareStatus(String(msg), true);
+      return;
+    }
+
+    const tileUrl = data.tile_url;
+    if (!tileUrl || typeof tileUrl !== 'string') {
+      setGlacierCompareStatus(
+        'Respuesta inválida del servidor (falta tile_url).',
+        true,
+      );
+      return;
+    }
+
+    if (glacierEeTileLayer) {
+      glacierLeafletMap.removeLayer(glacierEeTileLayer);
+      glacierEeTileLayer = null;
+    }
+
+    glacierEeTileLayer = L.tileLayer(tileUrl, {
+      attribution: 'Google Earth Engine',
+    });
+    glacierEeTileLayer.addTo(glacierLeafletMap);
+    setGlacierCompareStatus(`Capa actualizada: ${year1} → ${year2}.`);
+  } catch (err) {
+    setGlacierCompareStatus(
+      'No se pudo conectar con la API. Comprueba CORS y que Flask esté en marcha.',
+      true,
+    );
+  } finally {
+    if (btn) btn.disabled = false;
+  }
 }
 
 // ── HOME CHART ──
@@ -395,3 +484,7 @@ async function sendMessage() {
   document.getElementById('send-btn').disabled = false;
   buildSuggestions();
 }
+
+document
+  .getElementById('glacier-compare-btn')
+  ?.addEventListener('click', compararGlacierMelt);

@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 </head>
 <body>
 
@@ -269,6 +270,24 @@
           ></iframe>
         </div>
       </div>
+      <div class="card glacier-compare-card">
+        <div class="card-title">🧊 Glacier melt comparison — Earth Engine</div>
+        <h3 class="glacier-compare-title">Comparar deshielo glaciar</h3>
+        <p class="glacier-compare-hint">NDSI change (Sentinel-2, summer composites). Run <code>python app.py</code> so the API is available.</p>
+        <div class="glacier-compare-controls">
+          <label class="glacier-compare-field">
+            <span>Año 1</span>
+            <input type="number" id="glacier-year1" value="2017" min="2015" max="2030">
+          </label>
+          <label class="glacier-compare-field">
+            <span>Año 2</span>
+            <input type="number" id="glacier-year2" value="2023" min="2015" max="2030">
+          </label>
+          <button type="button" class="glacier-compare-btn" id="glacier-compare-btn">Comparar</button>
+        </div>
+        <p class="glacier-compare-status" id="glacier-compare-status" aria-live="polite"></p>
+        <div id="glacier-compare-map" class="glacier-compare-map"></div>
+      </div>
     </div>
   </div>
 
@@ -344,6 +363,7 @@
   </div>
 </div>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script src="script.js"></script>
 </body>
 </html>

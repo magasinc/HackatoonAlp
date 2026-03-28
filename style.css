@@ -434,6 +434,110 @@ nav {
   border: 0;
 }
 
+.glacier-compare-card {
+  margin-top: 1.5rem;
+}
+
+.glacier-compare-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--summit);
+  margin: 0 0 0.5rem;
+}
+
+.glacier-compare-hint {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin: 0 0 1rem;
+  line-height: 1.45;
+}
+
+.glacier-compare-hint code {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  background: rgba(0, 0, 0, 0.06);
+  padding: 0.12rem 0.35rem;
+  border-radius: 4px;
+}
+
+.glacier-compare-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.glacier-compare-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.glacier-compare-field input {
+  width: 6.5rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  background: #fff;
+}
+
+.glacier-compare-field input:focus {
+  outline: none;
+  border-color: var(--glacier);
+}
+
+.glacier-compare-btn {
+  padding: 0.55rem 1.25rem;
+  border: none;
+  border-radius: 10px;
+  background: var(--summit);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.glacier-compare-btn:hover {
+  opacity: 0.92;
+}
+
+.glacier-compare-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.glacier-compare-status {
+  min-height: 1.25rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 0 0 0.75rem;
+}
+
+.glacier-compare-status.is-error {
+  color: #B5332A;
+}
+
+.glacier-compare-map {
+  height: min(500px, 65vh);
+  min-height: 280px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--summit);
+}
+
+.glacier-compare-map .leaflet-container {
+  font-family: var(--font-body);
+}
+
 /* ── CHART ── */
 .chart-wrap {
   height: 200px;
