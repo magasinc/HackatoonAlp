@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "spacehack-491617",
+  "private_key_id": "d69f5ac8209fe09c06001bd4d171544f16ae7c7a",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDPjKZYRhooOjJA\nYblRfHo8lFJahNUpbHTcpAzjavgTyn9DCMOSHyqJMrYIQtsMVIKtJrRPWAWhXbjd\ncLJWns7pXGGTMlNZk5mz55zyM5trsvM5iGXWRKu4iZnDGHxaPPqFiVpmDuKMyFnO\n5cmhQGkjglVzkqyHE1C3Ey+g3xivVkmqGq/KJfzoXY8TvGnAoisYJLjweb6ysr9E\n/tTQlZmw9H8Yapnq1Ju2fajD88v03n8nVPBWU1+G2XznaVDPRZzdBN5kmI9cgR2q\nAMg8y6pY5NnFxghWhMLhqEKmltx6QmguXh+lT1mMt0yswhPIY1yTHejy79lDKsn3\nnjpSUWXlAgMBAAECggEAX05wgn+qekeDFOJrNXqKLTBVAuEVe4Ckxz8D9hiEU548\nwz0OhZaPM1JYmcGNkgNqwHVR/k9mwntlrTYXhsRFMo7r9ap58NvhDGZywRumppWV\nsBks3nBJRKPXOmoPjGaNCe4RV2VFbi2AZAxMAyKvRRGQCNLVK+/YNEF4sRBRZw3N\nvoXH9KPIz1HpjxknwGUWDhYndlJ8MmW6HKq+9fbbAS9fyKoXvD7YWI8vjPfV6gf6\nLiaIxRFvYD3jFo/pE3mNHmeibRoFv6xFk2zBU4y78OZKa1g18VoSKPcizeW3XSzc\n+VnOLNkCvC9dGDJsLNf5WHiF4gnHM1NdVSvKBeSkLwKBgQD6DL3BJmvkzenNt3EB\nvA7ZunLLQ3t1ZNKsc21R+HkYvHDI5yv4QXYP/vT+qZmfUsZhdbfcpBEP+u+u9l7L\nJJc8QEjaVMFJE3S2b8oDDOL7QKAfWf2w+GgNVz492RRI/7dUaSJ2gjRl++5iZ7Dj\n2VN2RfQ9GKSrNisSrx6nbnlmywKBgQDUfQEBqBa30Aw/sOcrujRFPQuPt4zk321T\nEcS5QA3l9QjQUeKiVtjCJ8O7oR0g0IG9aD9DZVdW4K7WrZ9fY2ZIn8pWiyOtYx3W\n6qQXA2BuOiB0IEgdk/MtBfB2WQaOmvj2ojwaUc8QW8i0Tty9w+yXdG0CosmCKZwt\n+pcVjrEgDwKBgCkSoLSyZ/SccjQtVq2vQ002WBbVTdk5p3VWPHXDd7i9c1U8y7cq\noYb9HScbmrVV9moZ2QqwFHFoiahWpbl+mCz4bj8Wvu0O+hPhhvA7VKlqsyKTOJ2y\nH/1ZAEtOdguLnYSLBHMs7gh2enDFkYPLte7ujLDgdGP/MNIP29wqxFxDAoGBAJpR\nnqWBWd5s7jhjVcBgHw4Z44egmmauDUvDH8gaSP21E42XqqyTviBjmLdvryPhyhew\n2iEsPF4QF2o59gDkw6gCxIRN0L9fuJAZIMrF3QawmFk+CKHSjU0pfxW0Whq/Wghk\nkpnayDLtNbodfBsla3IjT/gWGZq6dX6++3LgiqrpAoGAUO/Bg/Llw9YG/qYtFk6w\noBPCnHxH+Fr8lohrgaF0eKGdVF4DJT29xWxW0Egd2cLd328YncsUUH89vayoz7Jc\n5t9Ly/ly7BliUq9IN7l7YGPZmDfEPl/A4PW3h0iXYv7RLsjMXgjFbsdNp11gX/dR\nMzO07YSdtBJ3bcyi0I3q4+I=\n-----END PRIVATE KEY-----\n",
+  "client_email": "mayra-955@spacehack-491617.iam.gserviceaccount.com",
+  "client_id": "103535883944289575680",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/mayra-955%40spacehack-491617.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
