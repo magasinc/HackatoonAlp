@@ -345,7 +345,11 @@ async function sendMessage() {
       body: JSON.stringify({
         message: text,
         sessionId: getOrCreateSessionId(),
-        messages: conversationHistory.map(m => ({ role: m.role, content: m.content })),
+        profile: currentProfile === 'journalist' ? 'journalist' : 'user',
+        messages: conversationHistory.map(m => ({
+          role: m.role,
+          content: m.content,
+        })),
       }),
     });
 
