@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlpineWatch — Climate Truth in the Alps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ══════════════════ LANDING ══════════════════ -->
+<div id="landing">
+  <div class="mountain-bg"></div>
+  <div class="stars" id="stars"></div>
+
+  <svg class="mountain-svg" viewBox="0 0 1400 500" preserveAspectRatio="xMidYMax meet" fill="none">
+    <path d="M0 400 L200 180 L380 300 L550 120 L720 280 L880 100 L1050 240 L1200 140 L1400 260 L1400 500 L0 500Z" fill="#0F3554" opacity="0.6"/>
+    <path d="M0 500 L150 260 L300 370 L480 150 L640 320 L780 80 L920 220 L1100 160 L1260 280 L1400 200 L1400 500Z" fill="#12405F"/>
+    <path d="M460 150 L480 110 L500 150Z" fill="white" opacity="0.7"/>
+    <path d="M760 80 L780 40 L800 80Z" fill="white" opacity="0.8"/>
+    <path d="M1080 160 L1100 115 L1120 160Z" fill="white" opacity="0.65"/>
+    <path d="M0 500 L0 380 L120 300 L260 420 L400 310 L560 440 L680 340 L820 460 L980 350 L1100 430 L1250 360 L1400 410 L1400 500Z" fill="#0D2B40"/>
+  </svg>
+
+  <div class="landing-content">
+    <div class="landing-eyebrow">🛰 Satellite intelligence for climate journalism</div>
+    <h1 class="landing-title">Alpine<em>Watch</em></h1>
+    <p class="landing-sub">
+      Combating climate disinformation in the Alps through verified satellite data, evidence-based journalism, and accessible science.
+    </p>
+    <div class="profile-cards">
+      <div class="profile-card" onclick="enterApp('public')">
+        <div class="profile-icon icon-public">🏔</div>
+        <div class="profile-label">Profile</div>
+        <div class="profile-name">Public Explorer</div>
+        <div class="profile-desc">Discover what's happening in the Alps. Ask questions, explore data, understand climate change.</div>
+      </div>
+      <div class="profile-card" onclick="enterApp('journalist')">
+        <div class="profile-icon icon-journalist">📡</div>
+        <div class="profile-label">Professional</div>
+        <div class="profile-name">Journalist & Researcher</div>
+        <div class="profile-desc">Access raw satellite data, scientific sources, methodologies, and verified datasets for reporting.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ MAIN APP ══════════════════ -->
+<div id="app">
+  <nav>
+    <div class="nav-brand">Alpine<span>Watch</span></div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showSection('home', this)">Overview</button>
+      <button class="nav-tab" onclick="showSection('chat', this)">AI Assistant</button>
+      <button class="nav-tab" onclick="showSection('map', this)">Satellite Map</button>
+      <button class="nav-tab" onclick="showSection('library', this)">Library</button>
+      <button class="nav-tab journalist-only" onclick="showSection('dashboard', this)">Data Dashboard</button>
+    </div>
+    <div class="nav-badge">
+      <span class="badge-pill" id="profile-badge"></span>
+      <button class="switch-btn" onclick="switchProfile()">Switch profile</button>
+    </div>
+  </nav>
+
+  <!-- ── HOME ── -->
+  <div class="section active" id="section-home">
+
+    <div id="journalist-banner" class="journalist-banner" style="display:none">
+      <div class="j-banner-inner">
+        <div style="font-size:1.8rem">📡</div>
+        <div class="j-banner-text">
+          <div class="j-banner-title">Journalist & Researcher Mode</div>
+          <div class="j-banner-sub">You have access to raw satellite datasets, scientific methodologies, and verified primary sources. The AI assistant will respond with technical detail.</div>
+        </div>
+        <button class="j-btn" onclick="showSection('dashboard', document.querySelectorAll('.nav-tab')[4])">Open Dashboard →</button>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div>
+        <div class="hero-eyebrow">🏔 The Alps — Climate Frontline</div>
+        <h2 class="hero-title">The Alps are melting.<br><em>The facts are clear.</em></h2>
+        <p class="hero-body" id="hero-body-text">
+          The Alps have lost over 50% of their glacier volume since 1900. Satellite imagery shows accelerating retreat. AlpineWatch brings you verified data and evidence-based stories to counter climate disinformation.
+        </p>
+        <div style="display:flex;gap:0.8rem;flex-wrap:wrap">
+          <button class="chat-send" onclick="showSection('chat', document.querySelectorAll('.nav-tab')[1])">Ask the AI →</button>
+          <button style="padding:0.75rem 1.4rem;border:1px solid var(--border);border-radius:10px;background:white;cursor:pointer;font-family:var(--font-body);font-size:0.88rem;color:var(--muted)" onclick="showSection('library', document.querySelectorAll('.nav-tab')[3])">Browse Library</button>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <svg width="100%" height="100%" viewBox="0 0 400 280" fill="none">
+          <rect width="400" height="280" fill="#0D2B40"/>
+          <circle cx="60" cy="30" r="1.5" fill="white" opacity="0.6"/>
+          <circle cx="150" cy="15" r="1" fill="white" opacity="0.5"/>
+          <circle cx="280" cy="25" r="2" fill="white" opacity="0.4"/>
+          <circle cx="350" cy="40" r="1" fill="white" opacity="0.7"/>
+          <circle cx="90" cy="55" r="1.2" fill="white" opacity="0.3"/>
+          <ellipse cx="200" cy="200" rx="200" ry="80" stroke="rgba(107,174,214,0.3)" stroke-width="0.8" stroke-dasharray="4 4"/>
+          <g transform="translate(60,90) rotate(-20)">
+            <rect x="-4" y="-3" width="8" height="6" rx="1" fill="#6BAED6"/>
+            <rect x="-14" y="-1" width="10" height="2" rx="0.5" fill="#4A90C0"/>
+            <rect x="4" y="-1" width="10" height="2" rx="0.5" fill="#4A90C0"/>
+            <circle cx="0" cy="0" r="2" fill="white" opacity="0.8"/>
+          </g>
+          <line x1="60" y1="93" x2="200" y2="175" stroke="rgba(107,174,214,0.25)" stroke-width="0.8" stroke-dasharray="3 4"/>
+          <path d="M0 280 L0 180 L80 110 L140 160 L200 80 L255 145 L310 90 L370 140 L400 120 L400 280Z" fill="#1A4A6B"/>
+          <path d="M190 80 L200 60 L210 80Z" fill="white" opacity="0.85"/>
+          <path d="M303 90 L310 70 L317 90Z" fill="white" opacity="0.75"/>
+          <path d="M73 110 L80 92 L87 110Z" fill="white" opacity="0.7"/>
+          <path d="M195 85 L200 100 L212 130 L208 150 L195 140 L188 125 L192 100Z" fill="rgba(107,174,214,0.5)"/>
+          <circle cx="200" cy="120" r="5" fill="none" stroke="#6BAED6" stroke-width="1" opacity="0.7">
+            <animate attributeName="r" values="5;15;5" dur="3s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.7;0;0.7" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="310" cy="105" r="4" fill="none" stroke="#C97A2A" stroke-width="1" opacity="0.6">
+            <animate attributeName="r" values="4;12;4" dur="2.5s" begin="1s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.6;0;0.6" dur="2.5s" begin="1s" repeatCount="indefinite"/>
+          </circle>
+        </svg>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">🌡 Temperature rise since 1900</div>
+        <div class="stat-value danger">+2.3°C</div>
+        <div class="stat-delta up">↑ 2× the global average</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">🧊 Glacier volume lost</div>
+        <div class="stat-value danger">−54%</div>
+        <div class="stat-delta up">↑ Accelerating since 1980</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">🛰 Satellite data points tracked</div>
+        <div class="stat-value">142K</div>
+        <div class="stat-delta">Updated weekly via Sentinel-2</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">✅ Myth-checks this month</div>
+        <div class="stat-value moss">38</div>
+        <div class="stat-delta down">↓ 12 myths debunked</div>
+      </div>
+    </div>
+
+    <div class="content-grid">
+      <div class="card">
+        <div class="card-title">📈 Temperature anomaly (Alps, °C above baseline)</div>
+        <div class="chart-wrap" id="temp-chart"></div>
+        <div style="display:flex;justify-content:space-between;font-size:0.7rem;color:var(--muted);font-family:var(--font-mono)">
+          <span>1960</span><span>1980</span><span>2000</span><span>2010</span><span>2024</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">📰 Latest verified articles</div>
+        <div class="article-list">
+          <div class="article-item">
+            <div class="article-thumb" style="background:rgba(107,174,214,0.1)">🛰</div>
+            <div class="article-meta">
+              <span class="article-tag tag-satellite">Satellite Data</span>
+              <div class="article-title">Sentinel-2 confirms 8% retreat of Aletsch Glacier in 2023</div>
+              <div class="article-desc">ESA imagery shows unprecedented summer melt rates.</div>
+            </div>
+          </div>
+          <div class="article-item">
+            <div class="article-thumb" style="background:rgba(181,51,42,0.08)">⚠️</div>
+            <div class="article-meta">
+              <span class="article-tag tag-myth">Myth Debunked</span>
+              <div class="article-title">"Alpine glaciers are recovering" — fact-checked false</div>
+              <div class="article-desc">Social media claims contradicted by 14 independent datasets.</div>
+            </div>
+          </div>
+          <div class="article-item">
+            <div class="article-thumb" style="background:rgba(62,107,74,0.08)">📊</div>
+            <div class="article-meta">
+              <span class="article-tag tag-verified">Verified</span>
+              <div class="article-title">Permafrost thaw increases rockfall risk for mountain communities</div>
+              <div class="article-desc">New peer-reviewed study maps high-risk zones across 4 countries.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CHAT ── -->
+  <div class="section" id="section-chat">
+    <div class="page-header">
+      <h2 class="page-title" id="chat-page-title">AI Assistant</h2>
+      <p class="page-sub" id="chat-page-sub">Ask anything about climate change in the Alps. I'll give you clear, verified answers.</p>
+    </div>
+    <div class="chat-wrapper">
+      <div class="chat-header">
+        <div class="chat-avatar">🏔</div>
+        <div>
+          <div class="chat-name">AlpineWatch AI</div>
+          <div class="chat-status"><span class="status-dot"></span> Online — powered by Claude</div>
+        </div>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="msg bot">
+          <div class="msg-icon">🏔</div>
+          <div>
+            <div class="msg-bubble" id="welcome-msg">Hello! I'm the AlpineWatch AI assistant. I can help you understand climate change in the Alps — from glacier retreat to what satellite data reveals. What would you like to know?</div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-area">
+        <div style="flex:1;display:flex;flex-direction:column;gap:0.6rem">
+          <div class="chat-suggestions" id="suggestions"></div>
+          <div style="display:flex;gap:0.8rem">
+            <textarea class="chat-input" id="chat-input" rows="2" placeholder="Ask about glaciers, climate data, or disinformation..." onkeydown="handleKey(event)"></textarea>
+            <button class="chat-send" onclick="sendMessage()" id="send-btn">Send →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MAP ── -->
+  <div class="section" id="section-map">
+    <div class="page-header">
+      <h2 class="page-title">Satellite Map — The Alps</h2>
+      <p class="page-sub">Interactive overview of glacier retreat zones, monitoring stations, and climate hotspots.</p>
+    </div>
+    <div style="max-width:1100px;margin:0 auto;padding:0 2rem 4rem">
+      <div class="card">
+        <div class="card-title">🗺 Alps Region — Glacier & Climate Monitoring</div>
+        <div class="map-container">
+          <svg class="map-svg" viewBox="0 0 700 320" fill="none">
+            <rect width="700" height="320" fill="#1A4A6B" rx="12"/>
+            <defs>
+              <radialGradient id="tg1" cx="35%" cy="40%">
+                <stop offset="0%" stop-color="#2A6895"/>
+                <stop offset="100%" stop-color="#0D2B40"/>
+              </radialGradient>
+            </defs>
+            <ellipse cx="350" cy="160" rx="380" ry="170" fill="url(#tg1)" opacity="0.6"/>
+            <path d="M40 200 L90 140 L130 175 L170 110 L210 150 L250 90 L290 135 L330 70 L370 115 L410 85 L450 120 L490 95 L530 130 L570 105 L610 140 L650 120 L680 155 L700 145 L700 320 L0 320Z" fill="#12405F" opacity="0.8"/>
+            <path d="M40 220 L90 165 L130 195 L170 130 L210 170 L250 108 L290 155 L330 85 L370 130 L410 100 L450 138 L490 112 L530 148 L570 122 L610 158 L650 138 L680 170 L700 160 L700 320 L0 320Z" fill="#0D2B40"/>
+            <path d="M245 90 L250 72 L255 90Z" fill="white" opacity="0.9"/>
+            <path d="M325 70 L330 50 L335 70Z" fill="white" opacity="0.95"/>
+            <path d="M405 85 L410 65 L415 85Z" fill="white" opacity="0.85"/>
+            <path d="M487 95 L492 74 L497 95Z" fill="white" opacity="0.8"/>
+            <path d="M565 105 L570 85 L575 105Z" fill="white" opacity="0.75"/>
+            <path d="M328 70 L340 100 L336 125 L330 115 L322 95Z" fill="rgba(107,174,214,0.6)"/>
+            <path d="M408 85 L418 110 L414 130 L408 120 L402 105Z" fill="rgba(107,174,214,0.5)"/>
+            <path d="M248 90 L256 112 L252 128 L246 118 L242 105Z" fill="rgba(107,174,214,0.45)"/>
+            <!-- Aletsch -->
+            <circle cx="330" cy="140" r="8" fill="rgba(107,174,214,0.3)" stroke="#6BAED6" stroke-width="1.5"/>
+            <circle cx="330" cy="140" r="4" fill="#6BAED6"/>
+            <!-- Mont Blanc -->
+            <circle cx="200" cy="150" r="8" fill="rgba(201,122,42,0.3)" stroke="#C97A2A" stroke-width="1.5"/>
+            <circle cx="200" cy="150" r="4" fill="#C97A2A"/>
+            <!-- Dolomites -->
+            <circle cx="490" cy="160" r="8" fill="rgba(62,107,74,0.3)" stroke="#3E6B4A" stroke-width="1.5"/>
+            <circle cx="490" cy="160" r="4" fill="#3E6B4A"/>
+            <!-- Bernese Alps alert -->
+            <circle cx="280" cy="170" r="8" fill="rgba(181,51,42,0.3)" stroke="#B5332A" stroke-width="1.5"/>
+            <circle cx="280" cy="170" r="4" fill="#B5332A"/>
+            <!-- Julian Alps -->
+            <circle cx="580" cy="180" r="8" fill="rgba(107,174,214,0.3)" stroke="#6BAED6" stroke-width="1.5"/>
+            <circle cx="580" cy="180" r="4" fill="#6BAED6"/>
+            <!-- Labels -->
+            <rect x="338" y="128" width="90" height="18" rx="4" fill="rgba(13,43,64,0.85)"/>
+            <text x="383" y="141" text-anchor="middle" fill="#6BAED6" font-size="10" font-family="monospace">Aletsch Glacier</text>
+            <rect x="140" y="138" width="76" height="18" rx="4" fill="rgba(13,43,64,0.85)"/>
+            <text x="178" y="151" text-anchor="middle" fill="#C97A2A" font-size="10" font-family="monospace">Mont Blanc</text>
+            <rect x="498" y="148" width="70" height="18" rx="4" fill="rgba(13,43,64,0.85)"/>
+            <text x="533" y="161" text-anchor="middle" fill="#3E6B4A" font-size="10" font-family="monospace">Dolomites</text>
+            <rect x="220" y="158" width="80" height="18" rx="4" fill="rgba(13,43,64,0.85)"/>
+            <text x="260" y="171" text-anchor="middle" fill="#B5332A" font-size="10" font-family="monospace">High alert zone</text>
+            <!-- Satellite track -->
+            <path d="M100 20 Q350 60 620 20" stroke="rgba(107,174,214,0.3)" stroke-width="1" stroke-dasharray="5 5"/>
+            <g transform="translate(350,42) rotate(-5)">
+              <rect x="-4" y="-3" width="8" height="5" rx="1" fill="#6BAED6"/>
+              <rect x="-12" y="-1" width="8" height="2" rx="0.5" fill="#4A90C0"/>
+              <rect x="4" y="-1" width="8" height="2" rx="0.5" fill="#4A90C0"/>
+            </g>
+            <line x1="560" y1="285" x2="660" y2="285" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+            <text x="610" y="298" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9" font-family="monospace">100 km</text>
+            <rect x="10" y="285" width="130" height="20" rx="4" fill="rgba(0,0,0,0.3)"/>
+            <text x="75" y="298" text-anchor="middle" fill="rgba(107,174,214,0.8)" font-size="9" font-family="monospace">🛰 Sentinel-2 / ESA</text>
+          </svg>
+        </div>
+        <div class="map-legend">
+          <span><span class="legend-dot" style="background:#6BAED6"></span>Glacier monitoring</span>
+          <span><span class="legend-dot" style="background:#C97A2A"></span>Temperature station</span>
+          <span><span class="legend-dot" style="background:#3E6B4A"></span>Biodiversity zone</span>
+          <span><span class="legend-dot" style="background:#B5332A"></span>High alert (rockfall / melt)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── LIBRARY ── -->
+  <div class="section" id="section-library">
+    <div class="page-header">
+      <h2 class="page-title">Verified Article Library</h2>
+      <p class="page-sub">Evidence-based stories and fact-checks on Alpine climate change.</p>
+    </div>
+    <div class="lib-grid" id="lib-grid"></div>
+  </div>
+
+  <!-- ── DASHBOARD (journalist only) ── -->
+  <div class="section journalist-only" id="section-dashboard">
+    <div class="page-header">
+      <h2 class="page-title">Data Dashboard — Professional</h2>
+      <p class="page-sub">Raw satellite datasets, scientific methodologies, and primary sources for verified reporting.</p>
+    </div>
+    <div class="dash-grid">
+      <div class="card">
+        <div class="card-title">🌡 Alpine temperature anomaly (°C)<br><span class="data-badge badge-sat" style="margin-top:0.3rem">MODIS / NASA Terra</span></div>
+        <div class="temp-chart" id="dash-temp"></div>
+        <div style="font-size:0.72rem;color:var(--muted);margin-top:0.5rem;font-family:var(--font-mono)">Baseline: 1951–1980 · Annual mean · Alps region (44–48°N, 6–16°E)</div>
+      </div>
+      <div class="card">
+        <div class="card-title">🧊 Glacier volume (Alps, km³)<br><span class="data-badge badge-sci" style="margin-top:0.3rem">WGMS / ETH Zürich</span></div>
+        <div class="glacier-line" id="dash-glacier"></div>
+        <div style="font-size:0.72rem;color:var(--muted);margin-top:0.5rem;font-family:var(--font-mono)">Compiled from 1850 moraines + photogrammetry + Sentinel radar</div>
+      </div>
+      <div class="card">
+        <div class="card-title">⚠️ Active climate myths<br><span class="data-badge badge-alert" style="margin-top:0.3rem">Live monitoring</span></div>
+        <div style="display:flex;flex-direction:column;gap:0.7rem;margin-top:0.5rem">
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.82rem">
+            <span>"Glaciers recovering"</span><span style="color:var(--danger);font-family:var(--font-mono);font-size:0.75rem">12,450 shares</span>
+          </div>
+          <div style="height:6px;background:var(--ice);border-radius:3px"><div style="width:78%;height:100%;background:var(--danger);border-radius:3px"></div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.82rem">
+            <span>"Alps snowfall increasing"</span><span style="color:var(--amber);font-family:var(--font-mono);font-size:0.75rem">8,210 shares</span>
+          </div>
+          <div style="height:6px;background:var(--ice);border-radius:3px"><div style="width:55%;height:100%;background:var(--amber);border-radius:3px"></div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.82rem">
+            <span>"No human cause"</span><span style="color:var(--muted);font-family:var(--font-mono);font-size:0.75rem">4,100 shares</span>
+          </div>
+          <div style="height:6px;background:var(--ice);border-radius:3px"><div style="width:30%;height:100%;background:var(--muted);border-radius:3px"></div></div>
+        </div>
+      </div>
+      <div class="card dash-full">
+        <div class="card-title">📡 Primary data sources</div>
+        <div class="source-list">
+          <div class="source-item">
+            <div class="source-dot" style="background:#6BAED6"></div>
+            <div><strong>ESA Sentinel-2</strong> — Multispectral glacier surface imaging, 10m resolution, 5-day revisit</div>
+            <span class="data-badge badge-sat">API available</span>
+          </div>
+          <div class="source-item">
+            <div class="source-dot" style="background:#3E6B4A"></div>
+            <div><strong>WGMS (World Glacier Monitoring Service)</strong> — Mass balance, terminus position, 1850–present</div>
+            <span class="data-badge badge-sci">Open access</span>
+          </div>
+          <div class="source-item">
+            <div class="source-dot" style="background:#C97A2A"></div>
+            <div><strong>NASA MODIS / Terra</strong> — Land surface temperature anomalies, snow cover extent</div>
+            <span class="data-badge badge-sat">API available</span>
+          </div>
+          <div class="source-item">
+            <div class="source-dot" style="background:#B5332A"></div>
+            <div><strong>MeteoSwiss / Copernicus</strong> — Climate change indicators for the Alps, peer-reviewed</div>
+            <span class="data-badge badge-sci">Peer-reviewed</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
